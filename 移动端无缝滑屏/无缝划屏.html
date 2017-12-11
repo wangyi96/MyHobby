@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta  name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				height: 100%;
+				overflow: hidden;
+			}
+			#wrap{
+				height: 100%;
+				overflow: hidden;
+			}
+			
+			#list_wrap{
+				position: relative;
+			}
+			
+			#list_wrap ul{
+				position: absolute;
+				overflow: hidden;
+				list-style: none;
+			}
+			#list_wrap ul>li{
+				float: left;
+			}
+			#list_wrap ul>li img{
+				width: 100%;
+				display: block;
+			}
+			#list_wrap .point{
+				position: absolute;
+				bottom: 0;
+				z-index: 1;
+				width: 100%;
+				text-align: center;
+			}
+			#list_wrap .point>span{
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				background: pink;
+				border-radius: 10px;
+				margin-left: 5px;
+			}
+			#list_wrap .point>span.active{
+				background: lawngreen;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="list_wrap" needCarouse>
+				<div class="point">
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/newtransform.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		document.addEventListener('touchstart',function(ev){
+			ev=ev||event;
+			ev.preventDefault();
+		})
+		
+		window.onload = function(){
+			var urls=["img/01.jpg","img/02.jpg","img/03.jpg","img/04.jpg","img/05.jpg",];
+			var pointLength = urls.length;
+			var wrap = document.querySelector('#list_wrap')
+			var list = document.createElement('ul');
+			var time=null;
+			var now = 0;
+			//判断是否有无缝
+			var needCarouse = wrap.getAttribute("needCarouse")
+			needCarouse = needCarouse = null?false:true;
+			if(needCarouse){
+				urls = urls.concat(urls);
+			}
+			//生成 ul 和li
+			var listHtml="";
+			for(var i=0;i<urls.length;i++){
+				listHtml+='<li><a href="javascript:;"><img src="'+urls[i]+'" alt="" /></a></li>';
+			}
+			list.innerHTML = listHtml;
+			wrap.appendChild(list);
+			
+			//设置ul li 的宽度 设置 盒子的高度
+			var imgNode = document.querySelectorAll('#list_wrap ul>li img');
+			setTimeout(function(){
+				var styleNode = document.createElement('style');
+				styleNode.innerHTML="#list_wrap ul{width: "+urls.length+"00% !important;}";
+				styleNode.innerHTML+="#list_wrap ul>li{width: "+100/urls.length+"% !important;}"
+				styleNode.innerHTML+="#list_wrap{height:"+imgNode[0].offsetHeight+"px}"
+				document.head.appendChild(styleNode);
+			},50)
+			
+			
+			//生成小圆点
+			var point = document.querySelector('#list_wrap .point');
+			if(point){
+				var spanText="";
+				for(var i=0;i<pointLength;i++){
+					if(i==0){
+						spanText+="<span class='active'></span>";
+					}else{
+						spanText+="<span></span>";
+					}
+				}
+				point.innerHTML = spanText;
+				var spanList = document.querySelectorAll('#list_wrap .point>span');
+			}
+			
+			
+			//手指点击时
+			var startX=0;
+			var elementX=0
+			wrap.addEventListener('touchstart',function(ev){
+				ev=ev||event;
+				var touchC  = ev.changedTouches[0];
+				
+				clearInterval(time);
+				if(needCarouse){
+					now = wy.css(list,"translateX") / document.documentElement.clientWidth;
+					if(now==0){
+						now = -urls.length/2;
+						wy.css(list,"translateX",now*document.documentElement.clientWidth)
+					}else if(now == 1- urls.length ){
+						now = 1-urls.length/2;
+						wy.css(list,"translateX",now*document.documentElement.clientWidth)
+					}
+				}
+				
+				list.style.transition="none"
+				startX = touchC.clientX;
+				elementX = wy.css(list,"translateX");
+			})
+			
+			//手指移动时
+			wrap.addEventListener('touchmove',function(ev){
+				ev=ev||event;
+				var touchC  = ev.changedTouches[0];
+				var nowX = touchC.clientX;
+				var disX = nowX - startX;
+				wy.css(list,"translateX",elementX + disX );
+			})
+			
+			//手指离开时
+			wrap.addEventListener('touchend',function(ev){
+				ev=ev||event;
+				var touchC  = ev.changedTouches[0];			
+				now = wy.css(list,"translateX") / document.documentElement.clientWidth;
+				console.log(now)
+				now = Math.round(now);
+				console.log(now)
+				if(point){
+					movePiont();
+				}
+				list.style.transition=".5s";
+				wy.css(list,"translateX",now*document.documentElement.clientWidth);
+				autoMove()
+			})
+			
+			autoMove()
+			function autoMove(){
+				clearInterval(time);
+				now = wy.css(list,"translateX") /document.documentElement.clientWidth;
+				console.log(wy.css(list,"translateX"))
+				time = setInterval(function(){
+					
+					if(now == 1-urls.length){
+						list.style.transition = "none"
+						now = 1- urls.length/2
+						wy.css(list,"translateX",now*document.documentElement.clientWidth);
+					}
+					
+					setTimeout(function(){
+						now--;
+						list.style.transition = "1s"
+						wy.css(list,"translateX",now*document.documentElement.clientWidth);
+						movePiont()
+					},50)
+					
+				},2000);
+			}
+			
+			//小圆点跟随逻辑
+			function movePiont(){	
+				//设置小圆点
+				for(var i=0;i<spanList.length;i++){
+					spanList[i].className="";
+				}
+						
+				if(now>=0){
+					spanList[now].className="active";
+				}else if(now<0){
+					spanList[-now%5].className="active";
+				}
+			}
+		}
+	</script>
+</html>

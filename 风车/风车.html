@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript">
+		
+			window.onload  = function(){
+				var num =0;
+				var wrap = document.getElementById('wrap');
+				
+				 var time = setInterval(function(){
+					num+=2;
+					wrap.style.webkitTransform="rotate("+num+"deg)"
+				},10)
+	}
+			
+		</script>
+		<style type="text/css">
+			#wrap{
+				position: relative;
+				width: 320px;
+				height: 320px;
+				margin: 0 auto;
+				margin-top: 80px;
+				/*border: 1px solid;*/
+				
+			}
+			
+			#wrap div{
+				float:left;
+				width: 150px;
+				height: 150px;
+				margin: 5px;
+				/*border: 1px solid;*/
+				background: lightblue;
+			}
+			
+			#wrap div:nth-child(1),#wrap div:nth-child(5){
+				border-radius: 0 70%;
+			}
+			
+			#wrap div:nth-child(3),#wrap div:nth-child(4){
+				border-radius: 70% 0;
+			}
+			
+			#wrap .zj{
+				position: absolute;
+				top:50%;
+				left: 50%;
+				margin-left: -6px;
+				margin-top: -6px;
+				width: 10px;
+				height: 10px;
+				border: 1px solid;
+				background: lightblue;
+				border-radius: 50% ;
+			}
+			
+			.gz{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -5px;
+				margin-top: -71px;
+				width: 10px;
+				height: 390px;
+				background: lightsalmon;
+			}
+			
+			
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div></div>
+			<div class="zj"></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="gz"></div>
+	</body>
+</html>

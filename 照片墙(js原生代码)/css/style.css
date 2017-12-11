@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+img{
+    width: 500px;
+    position: absolute;
+
+}
+body{
+    min-width: 800px;
+    min-height: 500px;
+}

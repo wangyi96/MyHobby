@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#wrap{
+				position: relative;
+				width: 300px;
+				height: 300px;
+				/*padding: 100px;*/
+				border: 1px solid;
+				margin: 150px auto;
+				}
+				
+			#wrap .box{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -50px;
+				margin-top: -50px;
+				width: 100px;
+				height: 100px;
+				transition: 2s;
+				transform-style: preserve-3d;
+				transform-origin: center center -50px;
+			}
+				
+			#wrap .box:hover{
+				transform: rotateX(180deg);
+			}
+				
+			#wrap .box>div{
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				text-align: center;
+				line-height: 100px;
+				transform-origin: center center -50px;
+			}
+			
+			#wrap .box div:nth-child(1){
+				background: red;
+			}
+			
+			#wrap .box div:nth-child(2){
+				background: orange;
+				transform: rotateX(-180deg) ; /*rotate(180deg)*/
+			}
+			
+			#wrap .box div:nth-child(3){
+				background: yellow;
+				transform: rotateY(-90deg);
+			}
+			
+			#wrap .box div:nth-child(4){
+				background: green;
+				transform: rotateY(90deg);
+			}
+			
+			#wrap .box div:nth-child(5){
+				background: blue;
+				transform: rotateX(90deg);
+			}
+			
+			#wrap .box div:nth-child(6){
+				background: pink;
+				transform: rotateX(-90deg);
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="box">
+				<div>前</div>
+				<div>后</div>
+				<div>左</div>
+				<div>右</div>
+				<div>上</div>
+				<div>下</div>
+			</div>
+		</div>
+	</body>
+</html>

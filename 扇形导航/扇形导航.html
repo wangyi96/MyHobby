@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			
+			#wrap{
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				width: 50px;
+				height: 50px;
+			}
+			
+			#wrap .home{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 50px;
+				height: 50px;
+				background: url(img/home.png);
+				border-radius: 50% ;
+				z-index: 1;
+				transition : 1s;
+			}
+			
+			#wrap .list >img{
+				position: absolute;
+				left: 0;
+				top: 0;
+				margin: 4px;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="home"></div>
+			<div class="list">
+				<img src="img/clos.png"/>
+				<img src="img/full.png"/>
+				<img src="img/open.png"/>
+				<img src="img/prev.png"/>
+				<img src="img/refresh.png"/>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		window.onload = function(){
+			var home = document.querySelector('.home');
+			var list = document.getElementsByTagName('img');
+			var flag = true;
+			var r = -140;
+			
+			for(var i =0;i<list.length;i++){
+				console.log(list.length)
+				list[i].onclick = function(){
+					this.style.transition = '.5s';
+					this.style.transform = 'rotate(-1440deg) scale(2)';
+					this.style.opacity = 0.1;
+					
+					this.addEventListener('transitionend',fn);
+				}
+			}
+			
+			function fn(){
+				this.style.opacity = 1;
+				this.style.transform = "rotate(-1440deg) scale(1)";
+				this.removeEventListener('transitionend',fn);
+			}
+			
+			home.onclick = function(){
+				if(flag){
+					home.style.transform = 'rotate(-720deg) ';
+					console.log(list[1].style.transform)
+					for(var i = 0;i<list.length;i++){
+						list[i].style.transform = "rotate(-1440deg) scale(1)";
+						list[i].style.transition =".5s "+(i*1)+"s ";
+						list[i].style.left= point(r,i *90/(list.length - 1)).left +'px';
+						list[i].style.top = point(r,i * 90/(list.length - 1)).top + 'px';
+					}
+				}else{
+					home.style.transform = 'rotate(0deg)';
+					for(var i = 0;i<list.length;i++){
+						list[i].style.transform = "rotate(0deg) scale(1)";
+						list[i].style.transition = ".5s "+((list.length-1-i)*0.1)+"s ";
+						list[i].style.left= 0+'px';
+						list[i].style.top = 0+'px';
+					}
+				}
+				flag = !flag;
+			}
+			
+			
+			function point(r,deg){
+				var left = 0;
+				var top = 0;
+				left =Math.round(r*Math.sin(deg*Math.PI/180)) ;
+				top =Math.round(r*Math.cos(deg*Math.PI/180)) ;
+				return {left:left,top:top};
+			}
+		}
+	</script>
+</html>

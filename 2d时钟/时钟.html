@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			ul{
+				list-style: none;
+			}
+			#wrap{
+				position: relative;
+				width: 200px;
+				height: 200px;
+				border: 1px solid;
+				border-radius:50% ;
+				margin: 100px auto;
+			}
+			
+			#wrap .list{
+				position: relative;
+				height: 100%;
+			}
+			
+			#wrap .list > li{
+				position: absolute;
+				top: 0;
+				left: 99px;
+				width:2px;
+				height: 8px;
+				background: black;
+				transform-origin: center 100px;
+			}
+			
+			#wrap .list >li:nth-child(5n+1){
+				height: 14px;
+			}
+			
+			#wrap .hour{
+				position: absolute;
+				left:97px ;
+				top: 70px;
+				width: 6px;
+				height: 30px;
+				background: black;
+				transform-origin: center 30px; 
+			}
+			
+			#wrap .min{
+				position: absolute;
+				left:98px ;
+				top: 50px;
+				width: 4px;
+				height: 50px;
+				background: blue;
+				transform-origin: center 50px; 
+			}
+			
+			#wrap .sec{
+				position: absolute;
+				top:30px;
+				left:98px;
+				width: 4px;
+				height: 70px;
+				background: red;
+				transform-origin: center 70px; 
+			}
+			
+			#wrap .icon{
+				position: absolute;
+				top:50%;
+				left: 50%;
+				margin-left: -10px;
+				margin-top: -10px;
+				width: 20px;
+				height: 20px;
+				background: lightsalmon;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<!--表盘-->
+		<div id="wrap">
+			<!--刻度-->
+			<ul class="list">
+			</ul>
+			<!--时针-->
+			<div class="hour"></div>
+			<!--分针-->
+			<div class="min"></div>
+			<!--秒针-->
+			<div class="sec"></div>
+			<!--圆盘-->
+			<div class="icon"></div>
+		</div>
+	</body>
+	<script>
+		window.onload = function(){
+			var ul = document.querySelector('#wrap .list');
+			var styleNode = document.createElement('style');
+			
+			var liText = '';
+			var cssText = '';
+			for(var i=0; i < 60;i++){
+				liText += '<li></li>';
+				cssText +="#wrap .list >li:nth-child("+(i+1)+"){transform: rotate("+(i*6)+"deg);}"
+			}
+			ul.innerHTML = liText;
+			styleNode.innerHTML = cssText;
+			document.head.appendChild(styleNode);
+			
+			var hour = document.querySelector('#wrap .hour');
+			var min = document.querySelector('.min');
+			var sec = document.querySelector('.sec');
+			
+			move();
+			
+			setInterval(function(){
+				move();
+			},1000);
+			
+			function move(){
+				var date = new Date();
+				var h = date.getHours();
+				var m = date.getMinutes();
+				var s = date.getSeconds();
+				
+				hour.style.transform = "rotate("+(h*30)+"deg)";
+				min.style.transform = "rotate("+(m*6)+"deg)";
+				sec.style.transform = "rotate("+(s*6)+"deg)";
+			}
+		}
+		</script>
+</html>

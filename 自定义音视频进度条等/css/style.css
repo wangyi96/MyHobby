@@ -1,0 +1,116 @@
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-size: 0;
+}
+body {
+  min-width: 100px;
+}
+#box {
+  background: #383838;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#box #controller {
+  height: 25px;
+  background: #2A2A2A;
+  position: relative;
+}
+#box #controller .progress {
+  position: relative;
+  height: 100%;
+  margin: 0 230px 0 55px;
+}
+#box #controller .progress .wrap {
+  position: absolute;
+  top: 11px;
+  width: 100%;
+  height: 3px;
+  background: #737373;
+}
+#box #controller .progress .wrap .inner {
+  position: absolute;
+  top: -2px;
+  width: 9px;
+  height: 7px;
+  z-index: 1;
+  background: white;
+  border-radius: 2px;
+}
+#box #controller .progress .wrap2 {
+  position: absolute;
+  top: 11px;
+  height: 3px;
+  background: lightcoral;
+}
+#box #controller .others {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 230px;
+  height: 100%;
+}
+#box #controller .others .time {
+  float: left;
+  width: 120px;
+  font-size: 12px;
+  color: white;
+  line-height: 25px;
+  margin-left: 5px;
+}
+#box #controller .others .full_screen {
+  float: left;
+  height: 100%;
+  width: 25px;
+}
+#box #controller .others .full_screen span {
+  display: block;
+  margin: 7px auto;
+  width: 11px;
+  height: 11px;
+  background: url(../img/icon.png) no-repeat;
+  background-position: 0 -58px;
+}
+#box #controller .others .sound {
+  float: left;
+  width: 80px;
+  height: 100%;
+}
+#box #controller .others .sound .switch {
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 8px 5px 0 0;
+  background: url(../img/icon.png) no-repeat;
+  background-position: 0 -34px;
+}
+#box #controller .others .sound .progress {
+  float: left;
+  height: 25px;
+  width: 60px;
+  margin: 0;
+}
+#box #controller .btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 55px;
+  height: 100%;
+  text-align: center;
+}
+#box #controller .btn div {
+  display: inline-block;
+  width: 9px;
+  height: 11px;
+  margin-top: 7px;
+  margin-right: 10px;
+}
+#box #controller .btn .start {
+  background: url(../img/icon.png);
+  background-position: 0 -23px;
+}
+#box #controller .btn .stop {
+  background: url(../img/icon.png);
+}

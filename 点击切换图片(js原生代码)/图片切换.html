@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        #outer{
+            width: 500px;
+            margin: 50px auto;
+            padding: 10px;
+            background-color: greenyellow;
+            /*设置文本居中*/
+            text-align: center;
+        }
+    </style>
+
+    <script type="text/javascript">
+        /*
+         场景：
+         美工准备好了五个图片，要求程序员完成如下功能
+         需求：
+         1.点击上一张，则把图片替换为比当前页面编号小 1 的图片
+         2.点击下一张，则把图片替换为比当前页面编号大 1 的图片
+         3.如果当前图片编号是已经是5，并且再次点击下一张，则显示编号为1 的图片
+         4.如果当前图片编号是已经是1，并且再次点击上一张，则显示编号为5 的图片
+         5.在 p 标签中动态显示语句： “总共 x 张图片，当前显示第 i 张”
+         */
+
+        window.onload = function () {
+            var imgNum = 5;
+            var imgIndex = 1;
+
+            var prev = document.getElementById('prev');
+            var next = document.getElementById('next');
+
+//            var info = document.getElementById('info');
+            info.innerHTML = '总共' + imgNum + '张图片，当前显示第' + imgIndex + '张';
+        
+           prev.onclick = function () {
+               imgIndex--;
+               if(imgIndex==0){
+                   imgIndex = 5;
+               }
+               var img = document.getElementsByTagName('img');
+               img = img[0];
+               img.src = 'img/' + imgIndex + '.jpg';
+
+               info.innerHTML = '总共' + imgNum + '张图片，当前显示第' + imgIndex + '张';
+           };
+
+            next.onclick = function () {
+                imgIndex++;
+                if(imgIndex >= imgNum+1){
+                    imgIndex = 1;
+                }
+                var img = document.getElementsByTagName('img');
+                img = img[0];
+                img.src = 'img/' + imgIndex + '.jpg';
+
+                info.innerHTML = '总共' + imgNum + '张图片，当前显示第' + imgIndex + '张';
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="outer">
+
+    <p id="info"><span>总共 x 张图片，当前显示第 i 张</span></p>
+
+    <img src="img/1.jpg" alt="图" />
+
+    <button id="prev">上一张</button>
+    <button id="next">下一张</button>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background: gray;
+			}
+			canvas{
+				position: absolute;
+				top:0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+				background: white;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas width="400" height="400"></canvas>
+	</body>
+	<script type="text/javascript">
+		var oc = document.querySelector('canvas')
+		if(oc.getContext){
+			var ctx = oc.getContext('2d');
+			
+			var arr=[];
+			
+			setInterval(function(){
+				console.log(arr)
+				ctx.clearRect(0,0,oc.width,oc.height);
+				
+				for(var i=0;i<arr.length;i++){
+					if(arr[i].a<=0){
+						arr.splice(i,1);
+					}
+					arr[i].r++;
+					arr[i].a -=0.01;
+				}
+				
+				for(var i=0;i<arr.length;i++){
+					ctx.fillStyle = "rgba("+arr[i].red+","+arr[i].green+","+arr[i].blue+","+arr[i].a+")";
+					ctx.beginPath();
+					ctx.arc(arr[i].x,arr[i].y,arr[i].r,0,2*Math.PI)
+					ctx.fill();
+				}
+			},1000/60)
+			
+			setInterval(function(){
+				var x = Math.round(Math.random()*oc.width);
+				var y = Math.round(Math.random()*oc.height);
+				var r = 10;
+				var green =  Math.round(Math.random()*255);
+				var red =  Math.round(Math.random()*255);
+				var blue =  Math.round(Math.random()*255);
+				var a =1;
+				
+				arr.push({
+					x:x,
+					y:y,
+					r:r,
+					red:red,
+					green:green,
+					blue:blue,
+					a:a
+				})
+				
+			},500)
+			
+			
+		}
+	</script>
+</html>

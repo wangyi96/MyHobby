@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				height: 100%;
+				overflow: hidden;
+			}
+			ul{
+				list-style: none;
+			}
+			header{
+				width: 100%;
+				height: 2rem;
+				font-size: 30px;
+				background: black;
+				color: white;
+			}
+			#wrap{
+				position: absolute;
+				top: 2rem;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				overflow: hidden;
+			}
+			#wrap .list{
+				overflow: hidden;
+			}
+			
+			#wrap .list>li{
+				float: left;
+				width: 7rem;
+				height: 7rem;
+				margin: .5rem;
+				background: url(img/loadingImg.gif) no-repeat;
+				background-position: center center;
+			}
+			
+			#wrap .list>li img{
+				display: block;
+				width: 100%;
+				border-radius: 5px;
+				opacity: 0;
+				transition: 1s opacity;
+			}
+			footer{
+				position: absolute;
+				width: 100%;
+				font-size: 1rem;
+				text-align: center;
+				line-height: 3rem;
+				transition: 1s transform;
+			}
+			#wrap .scrollBar{
+				position: absolute;
+				top:0;
+				right: 0;
+				bottom: 0;
+				height: 100%;
+				width: 5px;
+				background: lightblue;
+				opacity: 0;
+				transition: .5s opacity;
+			}
+		</style>
+	</head>
+	<body>
+		<header>三国</header>
+		<div id="wrap">
+			<div class="content">
+				<ul class="list"></ul>
+				<footer>上滑加载更多</footer>
+			</div>
+			<div class="scrollBar"></div>
+		</div>
+	</body>
+	<script src="js/wy.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		document.addEventListener('touchstart',function(ev){
+			ev = ev||event;
+			ev.preventDefault();
+		});
+		
+		(function(){
+			var styleNode = document.createElement('style');
+			var width = document.documentElement.clientWidth /16;
+			styleNode.innerHTML = "html{font-size:"+width+"px !important}"
+			document.head.appendChild(styleNode);
+		})();
+		
+		window.onload = function(){
+			var head= document.querySelector('header');
+			var wrap = document.querySelector('#wrap');
+			var content = document.querySelector('#wrap .content');
+			var ulNode = document.querySelector('#wrap .list');
+			var liNode = document.getElementsByTagName('li');
+			var footer = document.querySelector('footer');
+			var scrollBar = document.querySelector('#wrap .scrollBar');
+			var maxS =  wrap.clientHeight -  content.clientHeight;
+			wy.css(footer,"scale",0)
+			var urls = [];
+			var minT = head.clientHeight;
+			var maxT = document.documentElement.clientHeight;
+			for(var i=0;i<100;i++){
+				urls.push("img/"+(i%18+1)+".jpg");
+			}
+
+			var length = 12
+			var start = 0;
+			var end = 0;
+			var isload = true;
+			var isOnly = true;  
+			
+			creatLi();
+			function creatLi(){
+				scrollBar.style.opacity = "0";
+				if(start>=urls.length){
+					if(isOnly){
+						isOnly = false;
+						footer.style.transition = "none"
+						footer.innerText = "没蓝了，大兄弟";
+						setTimeout(function(){
+							footer.innerText = "";
+							var maxT = wrap.clientHeight -  content.clientHeight;
+							content.style.transition = "1s"
+							wy.css(footer,"scale",0)
+							wy.css(content,"translateY",maxT)
+						},2000)
+						return;
+					}
+				}
+				wy.css(footer,"scale",0)
+				end = end + length;
+				end = end>urls.length?urls.length:end;
+				for(var i=start;i<end;i++){
+					var liNode = document.createElement('li')
+					liNode.src = urls[i];
+					ulNode.appendChild(liNode);
+				}
+				start = end;
+				loading();
+			}
+			
+			function loading(){
+				for(var i=0;i<liNode.length;i++){
+					var t = liNode[i].getBoundingClientRect().top;
+					if(minT<t&&t<maxT&&!liNode[i].isload){
+						createImg(liNode[i]);
+						//liNode[i]中有isload属性为true的元素不能再次添加
+						liNode[i].isload = true
+					}
+				}
+			}
+			
+			function createImg(liNode){
+				var img = new Image;
+				img.src = liNode.src;
+				liNode.appendChild(img)
+				img.onload = function(){
+					img.style.opacity = 1;
+				}
+			}
+			
+			var callBack={
+				start:function(){
+					var scale = wrap.clientHeight / content.clientHeight;
+					scrollBar.style.height = wrap.clientHeight*scale+'px';
+					scrollBar.style.opacity = "1"
+					
+					if(!isOnly){
+						return;
+					}
+					
+					maxS =  wrap.clientHeight -  content.clientHeight;
+					if(wy.css(content,"translateY")<=maxS){
+						wy.css(footer,"scale",1);
+						isCreateLi = true
+					}else{
+						isCreateLi = false;
+					}
+				},
+				move:function(){
+					var scale = wrap.clientHeight / content.clientHeight;
+					wy.css(scrollBar,"translateY",-wy.css(content,"translateY")*scale);
+					if(!isOnly){
+						return;
+					}
+					loading();
+				},
+				end:function(){
+					if(!isOnly){
+						return;
+					}
+					if(isCreateLi&&wy.css(content,"translateY")<=maxS){
+						clearInterval(this.timer);
+						creatLi();
+					}
+				},
+				over:function(){
+					wy.css(footer,"scale",0);
+					scrollBar.style.opacity = "0";
+				}
+			}
+
+			wy.vMove(wrap,callBack);
+		}
+		
+	</script>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #D1 {
+            width: auto;
+            height: auto;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .d1 {
+            margin-left: 350px;
+            float: left;
+        }
+
+        .d2 {
+            overflow: hidden;
+            float: left;
+        }
+
+        button {
+            width: 100px;
+            height: 20px;
+            margin-left: 600px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+
+            var startBtn = document.getElementById('start');
+            var stopBtn = document.querySelector('#stop');
+            var time = null;
+
+            startBtn.onclick = function () {
+                clearInterval(time);
+                time = setInterval(function () {
+                    var imgInedx1 = fun();
+                    var img1 = document.getElementById('img1');
+                    img1.src = 'img1/' + imgInedx1 + '.jpg';
+
+                    var imgInedx2 = fun();
+                    var img2 = document.getElementById('img2');
+                    img2.src = 'img1/' + imgInedx2 + '.jpg';
+
+                    var imgInedx3 = fun();
+                    var img3 = document.getElementById('img3');
+                    img3.src = 'img1/' + imgInedx3 + '.jpg';
+
+                    stopBtn.onclick = function () {
+                        clearInterval(time);
+                        if (imgInedx1 == imgInedx2 && imgInedx2 == imgInedx3) {
+
+                            alert('nice !,你终于摇出来了');
+                            clearInterval(time);
+                        }
+                    }
+                });
+
+
+                function fun() {
+                    var imgInedx = Math.round(Math.random() * 2);
+                    return imgInedx;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="D1">
+    <div class="d1">
+        <img id='img1' src="img1/0.jpg" alt="aaa">
+    </div>
+    <div class="d2">
+        <img id='img2' src="img1/0.jpg" alt="bbb">
+    </div>
+    <div class="d3">
+        <img id='img3' src="img1/0.jpg" alt="ccc">
+    </div>
+    <div id="D2">
+        <button id="start">开始</button>
+        <button id="stop">暂停</button>
+    </div>
+
+</div>
+
+</body>
+</html>
